@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GymOS — Gym Management Software</title>
+<meta name="description" content="Members tap a card to check in, you see who's active, who's expired, and who's due to renew — all in one dashboard.">
+<style>
+:root {
+  --bg: #f8f9fc; --surface: #fff; --border: #e2e5ee;
+  --text: #111827; --text-muted: #6b7280; --text-faint: #9ca3af;
+  --brand: #7c3aed; --brand-hover: #6d28d9; --brand-light: rgba(124,58,237,0.08);
+  --green: #22c55e; --radius: 14px;
+  --font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: var(--font); background: var(--bg); color: var(--text); line-height: 1.5; }
+a { text-decoration: none; color: inherit; }
+h1, h2, h3 { font-weight: 700; letter-spacing: -0.02em; }
+
+nav { display: flex; align-items: center; justify-content: space-between; padding: 20px 48px; border-bottom: 1px solid var(--border); }
+.nav-brand { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 15px; }
+.nav-mark { width: 30px; height: 30px; border-radius: 10px; background: linear-gradient(135deg, var(--brand), #4f46e5); display: flex; align-items: center; justify-content: center; }
+.nav-links { display: flex; align-items: center; gap: 20px; }
+.nav-links a { font-size: 13.5px; font-weight: 500; color: var(--text-muted); }
+.nav-cta { background: var(--brand); color: #fff !important; padding: 8px 18px; border-radius: 10px; }
+.nav-cta:hover { background: var(--brand-hover); }
+
+.hero { display: grid; grid-template-columns: 1.1fr 1fr; gap: 48px; padding: 80px 48px; max-width: 1200px; margin: 0 auto; align-items: center; }
+.eyebrow { font-family: monospace; font-size: 12px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--brand); }
+.hero h1 { font-size: 48px; line-height: 1.1; margin: 16px 0 20px; }
+.hero p { font-size: 16px; max-width: 460px; margin-bottom: 28px; color: var(--text-muted); }
+.hero-actions { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 16px; }
+.btn-primary { display: inline-flex; padding: 13px 24px; border-radius: 10px; background: var(--brand); color: #fff !important; font-weight: 600; font-size: 14px; box-shadow: 0 4px 16px rgba(124,58,237,0.25); }
+.btn-primary:hover { background: var(--brand-hover); }
+.btn-secondary { display: inline-flex; padding: 13px 24px; border-radius: 10px; border: 1px solid var(--border); font-weight: 600; font-size: 14px; }
+.btn-secondary:hover { background: #f1f3f8; }
+.hero-note { font-size: 12.5px; color: var(--text-faint); }
+
+.mock-card { background: var(--surface); border: 1px solid var(--border); border-radius: 18px; padding: 32px; max-width: 320px; box-shadow: 0 20px 50px rgba(0,0,0,0.1); }
+.mock-status { display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 600; color: #16a34a; margin-bottom: 12px; }
+.mock-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--green); }
+.mock-time { font-size: 40px; font-weight: 800; margin-bottom: 4px; }
+.mock-sub { font-size: 13px; color: var(--text-muted); margin: 4px 0 16px; }
+.mock-btn { width: 100%; padding: 11px; border-radius: 10px; border: none; background: var(--brand); color: #fff; font-weight: 500; font-size: 13px; cursor: pointer; }
+
+section.section { max-width: 1100px; margin: 0 auto; padding: 64px 48px; }
+.section-title { font-size: 30px; text-align: center; margin-bottom: 8px; }
+.section-sub { text-align: center; font-size: 14.5px; color: var(--text-muted); margin-bottom: 40px; }
+
+.grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+.card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; }
+.card h3 { font-size: 15px; margin-bottom: 8px; }
+.card p { font-size: 13.5px; color: var(--text-muted); }
+
+.step-label { font-family: monospace; font-size: 11px; font-weight: 700; color: var(--brand); letter-spacing: 0.08em; }
+.step h3 { font-size: 17px; margin: 8px 0; }
+.step p { font-size: 13.5px; color: var(--text-muted); }
+
+.beta-banner { max-width: 1100px; margin: 0 auto 64px; padding: 32px 48px; border-radius: 18px; background: var(--brand-light); border: 1px solid rgba(124,58,237,0.25); display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
+.badge { background: var(--brand); color: #fff; font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 999px; }
+.beta-banner p { flex: 1; min-width: 240px; font-size: 13.5px; color: var(--text-muted); }
+
+.final-cta { text-align: center; padding: 64px 24px; }
+.final-cta h2 { font-size: 28px; margin-bottom: 24px; }
+
+footer { text-align: center; padding: 32px 24px; border-top: 1px solid var(--border); color: var(--text-faint); font-size: 12.5px; }
+footer p { margin-bottom: 4px; }
+
+@media (max-width: 900px) {
+  .hero { grid-template-columns: 1fr; padding: 48px 24px; }
+  .grid-3 { grid-template-columns: 1fr; }
+  section.section { padding: 48px 24px; }
+}
+@media (max-width: 600px) { .hero h1 { font-size: 32px; } }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-brand">
+    <div class="nav-mark">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M6.5 6.5h11"/><path d="M6.5 17.5h11"/><path d="M3 6.5v11"/><path d="M21 6.5v11"/><path d="M6.5 12h11"/>
+      </svg>
+    </div>
+    GymOS
+  </div>
+  <div class="nav-links">
+    <a href="https://app.yourdomain.com">Log in</a>
+    <a href="https://app.yourdomain.com/signup" class="nav-cta">Get Started</a>
+  </div>
+</nav>
+
+<section class="hero">
+  <div>
+    <span class="eyebrow">Gym management, simplified</span>
+    <h1>Stop tracking attendance by hand</h1>
+    <p>Members tap a card to check in, you see who's active, who's expired, and who's due to renew — all in one dashboard. No spreadsheet, no paper sign-in sheet.</p>
+    <div class="hero-actions">
+      <a href="https://app.yourdomain.com/signup" class="btn-primary">Create your gym — free</a>
+      <a href="#features" class="btn-secondary">See what it does</a>
+    </div>
+    <p class="hero-note">Free during beta · Set up in under 5 minutes</p>
+  </div>
+  <div style="display:flex; justify-content:center;">
+    <div class="mock-card">
+      <div class="mock-status"><span class="mock-dot"></span> Checked in</div>
+      <div class="mock-time">00:00:00</div>
+      <p class="mock-sub">Tapped in at <strong>--:--</strong> · <strong>Maria Santos</strong></p>
+      <button class="mock-btn">Tap Out Now</button>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="grid-3">
+    <div class="card"><h3>The spreadsheet breaks</h3><p>One wrong formula and last week's attendance is gone. Nobody knows which version is current.</p></div>
+    <div class="card"><h3>Paper sign-in sheets vanish</h3><p>A coffee-stained logbook doesn't hold up when you're trying to figure out who actually renewed.</p></div>
+    <div class="card"><h3>No real visibility</h3><p>You find out a member's membership expired when they're already at the front desk, annoyed.</p></div>
+  </div>
+</section>
+
+<section class="section" id="features">
+  <h2 class="section-title">Everything your gym needs to run</h2>
+  <p class="section-sub">Built for small and mid-size gyms — one clean dashboard, no bloated enterprise suite.</p>
+  <div class="grid-3">
+    <div class="card"><h3>NFC/RFID tap check-in</h3><p>Members tap a card or phone. Check-in, status, and history logged automatically.</p></div>
+    <div class="card"><h3>Automated billing</h3><p>Charge members through PayMongo — memberships extend automatically once paid.</p></div>
+    <div class="card"><h3>Multi-branch support</h3><p>Run more than one location under a single account, with per-branch reporting.</p></div>
+    <div class="card"><h3>Class & locker management</h3><p>Schedule classes, track bookings, and assign lockers without a spreadsheet.</p></div>
+    <div class="card"><h3>Real attendance analytics</h3><p>See peak hours, retention rate, and daily traffic at a glance.</p></div>
+    <div class="card"><h3>Works offline</h3><p>Front desk keeps checking members in even if the internet drops — syncs automatically after.</p></div>
+  </div>
+</section>
+
+<section class="section">
+  <h2 class="section-title">Live in one afternoon</h2>
+  <p class="section-sub">No IT team, no setup calls.</p>
+  <div class="grid-3">
+    <div class="step"><span class="step-label">STEP 1</span><h3>Create your gym</h3><p>Sign up with your gym name and you're the owner — no waiting on anyone.</p></div>
+    <div class="step"><span class="step-label">STEP 2</span><h3>Register your members</h3><p>Add members and assign each one an NFC or RFID card in seconds.</p></div>
+    <div class="step"><span class="step-label">STEP 3</span><h3>Everyone taps in</h3><p>Your front desk starts logging check-ins immediately — you watch it happen in real time.</p></div>
+  </div>
+</section>
+
+<section class="beta-banner">
+  <span class="badge">Beta</span>
+  <p>We're piloting GymOS with a small number of gyms right now — early access is free, and your feedback shapes what we build next.</p>
+  <a href="https://app.yourdomain.com/signup" class="btn-primary">Join the pilot</a>
+</section>
+
+<section class="final-cta">
+  <h2>Ready to see it for your gym?</h2>
+  <a href="https://app.yourdomain.com/signup" class="btn-primary">Create your gym — free</a>
+</section>
+
+<footer>
+  <p>GymOS — multi-tenant gym management platform</p>
+  <p>Questions? <a href="mailto:you@yourdomain.com">you@yourdomain.com</a></p>
+</footer>
+
+</body>
+</html>
