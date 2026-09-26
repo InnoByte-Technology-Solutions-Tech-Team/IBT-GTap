@@ -1,495 +1,431 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GTAP - The operations platform for multi-location fitness brands</title>
-<meta name="description" content="GTAP replaces spreadsheets and paper sign-in sheets with one operations console: check-ins, billing, classes, and multi-branch reporting in real time.">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-<style>
-  :root {
-    --ink: #0A0E17;
-    --ink-soft: #141A28;
-    --surface: #FFFFFF;
-    --bg: #F5F6F8;
-    --bg-alt: #EFF1F4;
-    --border: #E1E4EA;
-    --border-strong: #CBD0DA;
-    --text: #10131C;
-    --text-muted: #5B6272;
-    --text-faint: #9198A6;
-    --on-ink-muted: #A6ADBB;
-    --accent: #146356;
-    --accent-bright: #1E9A83;
-    --accent-soft: rgba(30, 154, 131, 0.10);
-    --accent-line: rgba(30, 154, 131, 0.30);
-    --amber: #B45309;
-    --radius-sm: 8px;
-    --radius: 12px;
-    --radius-lg: 18px;
-    --font-display: 'Space Grotesk', 'Inter', sans-serif;
-    --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-    --font-mono: 'IBM Plex Mono', 'SFMono-Regular', Menlo, monospace;
-    --max: 1180px;
-  }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="GTap is the modern gym management platform for members, attendance, payments, branches and more.">
+  <title>GTap — Run your gym better</title>
+  <style>
+    :root {
+      --navy: #07111f;
+      --navy-2: #0b1b2e;
+      --ink: #112235;
+      --muted: #66768a;
+      --line: #e6edf3;
+      --blue: #377dff;
+      --blue-dark: #2464da;
+      --cyan: #4ed4df;
+      --lime: #baf35a;
+      --surface: #f7fafc;
+      --white: #ffffff;
+      --shadow: 0 24px 70px rgba(11, 34, 59, .14);
+      --radius: 22px;
+    }
 
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  html { scroll-behavior: smooth; }
-  body {
-    font-family: var(--font-body);
-    background: var(--bg);
-    color: var(--text);
-    line-height: 1.55;
-    -webkit-font-smoothing: antialiased;
-  }
-  a { text-decoration: none; color: inherit; }
-  h1, h2, h3 { font-family: var(--font-display); font-weight: 600; letter-spacing: -0.01em; color: var(--text); }
-  img, svg { display: block; }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: var(--white);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: inherit; text-decoration: none; }
+    button { font: inherit; }
+    .container { width: min(1160px, calc(100% - 48px)); margin: 0 auto; }
 
-  :focus-visible {
-    outline: 2px solid var(--accent-bright);
-    outline-offset: 2px;
-    border-radius: 4px;
-  }
+    .announcement {
+      color: #d9f5ff;
+      background: #0e2942;
+      padding: 9px 20px;
+      text-align: center;
+      font-size: 12px;
+      letter-spacing: .02em;
+    }
+    .announcement strong { color: var(--lime); }
 
-  .mono { font-family: var(--font-mono); }
-  .wrap { max-width: var(--max); margin: 0 auto; padding: 0 40px; }
+    header {
+      position: absolute;
+      z-index: 4;
+      top: 36px;
+      left: 0;
+      right: 0;
+      color: var(--white);
+    }
+    .nav { display: flex; align-items: center; justify-content: space-between; height: 64px; }
+    .logo { display: flex; gap: 10px; align-items: center; font-weight: 800; font-size: 21px; letter-spacing: -.04em; }
+    .logo-mark { display: grid; place-items: center; width: 31px; height: 31px; color: var(--navy); background: var(--lime); border-radius: 10px; font-size: 17px; font-weight: 900; transform: rotate(-7deg); }
+    .nav-links { display: flex; gap: 34px; align-items: center; margin-left: 90px; color: #b8c9db; font-size: 13px; }
+    .nav-links a:hover { color: var(--white); }
+    .nav-actions { display: flex; gap: 18px; align-items: center; font-size: 13px; }
+    .nav-actions .login { color: #c3d2e0; }
+    .nav-toggle { display: none; border: 0; color: white; background: none; font-size: 25px; cursor: pointer; }
 
-  /* ---------- Nav ---------- */
-  nav {
-    position: sticky; top: 0; z-index: 40;
-    background: rgba(245, 246, 248, 0.85);
-    backdrop-filter: blur(10px);
-    border-bottom: 1px solid var(--border);
-  }
-  .nav-inner { display: flex; align-items: center; justify-content: space-between; padding: 16px 40px; max-width: var(--max); margin: 0 auto; }
-  .nav-brand { display: flex; align-items: center; gap: 10px; font-family: var(--font-display); font-weight: 700; font-size: 15px; letter-spacing: -0.01em; }
-  .nav-mark { width: 30px; height: 30px; border-radius: 8px; background: var(--ink); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-  .nav-links { display: flex; align-items: center; gap: 28px; }
-  .nav-links a.nav-link { font-size: 13.5px; font-weight: 500; color: var(--text-muted); }
-  .nav-links a.nav-link:hover { color: var(--text); }
-  .nav-divider { width: 1px; height: 18px; background: var(--border-strong); }
-  .nav-login { font-size: 13.5px; font-weight: 500; color: var(--text-muted); }
-  .nav-login:hover { color: var(--text); }
-  .nav-cta {
-    background: var(--ink); color: #fff !important; padding: 9px 18px; border-radius: var(--radius-sm);
-    font-size: 13.5px; font-weight: 600; white-space: nowrap;
-  }
-  .nav-cta:hover { background: var(--ink-soft); }
-  .nav-mobile-links { display: none; }
+    .btn { display: inline-flex; align-items: center; justify-content: center; gap: 9px; border: 0; border-radius: 9px; padding: 13px 19px; color: var(--white); background: var(--blue); font-size: 13px; font-weight: 700; cursor: pointer; transition: .2s ease; }
+    .btn:hover { background: var(--blue-dark); transform: translateY(-1px); }
+    .btn-light { color: var(--navy); background: var(--white); }
+    .btn-light:hover { background: #edf4fb; }
+    .btn-outline { border: 1px solid rgba(255,255,255,.3); background: transparent; }
+    .btn-outline:hover { background: rgba(255,255,255,.1); }
 
-  /* ---------- Hero ---------- */
-  .hero-section { border-bottom: 1px solid var(--border); background: var(--bg); }
-  .hero { display: grid; grid-template-columns: 1fr 0.92fr; gap: 56px; padding: 88px 0 72px; max-width: var(--max); margin: 0 auto; padding-left: 40px; padding-right: 40px; align-items: center; }
-  .eyebrow {
-    display: inline-flex; align-items: center; gap: 8px;
-    font-family: var(--font-mono); font-size: 11.5px; font-weight: 500; letter-spacing: 0.04em;
-    color: var(--accent); text-transform: uppercase;
-    padding: 5px 10px 5px 8px; border: 1px solid var(--accent-line); border-radius: 999px; background: var(--accent-soft);
-  }
-  .eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent-bright); }
-  .hero h1 { font-size: 46px; line-height: 1.09; margin: 20px 0 20px; max-width: 560px; }
-  .hero p.lead { font-size: 16.5px; max-width: 440px; margin-bottom: 30px; color: var(--text-muted); }
-  .hero-actions { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 18px; }
-  .btn-primary {
-    display: inline-flex; align-items: center; gap: 8px; padding: 13px 22px; border-radius: var(--radius-sm);
-    background: var(--ink); color: #fff !important; font-weight: 600; font-size: 14px; border: 1px solid var(--ink);
-  }
-  .btn-primary:hover { background: var(--ink-soft); }
-  .btn-secondary {
-    display: inline-flex; align-items: center; padding: 13px 22px; border-radius: var(--radius-sm);
-    border: 1px solid var(--border-strong); font-weight: 600; font-size: 14px; background: var(--surface); color: var(--text);
-  }
-  .btn-secondary:hover { border-color: var(--text-faint); background: var(--bg-alt); }
-  .hero-note { font-size: 12.5px; color: var(--text-faint); }
+    .hero {
+      position: relative;
+      overflow: hidden;
+      color: var(--white);
+      background: var(--navy);
+      padding: 168px 0 150px;
+    }
+    .hero::before, .hero::after { content: ""; position: absolute; border-radius: 50%; filter: blur(1px); pointer-events: none; }
+    .hero::before { width: 600px; height: 600px; top: -300px; right: -60px; background: radial-gradient(circle, rgba(55,125,255,.2), transparent 67%); }
+    .hero::after { width: 700px; height: 700px; bottom: -500px; left: -260px; background: radial-gradient(circle, rgba(78,212,223,.11), transparent 65%); }
+    .hero-grid { display: grid; grid-template-columns: .88fr 1.12fr; gap: 75px; align-items: center; position: relative; z-index: 1; }
+    .eyebrow { display: flex; align-items: center; gap: 9px; color: var(--lime); font-size: 11px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; }
+    .eyebrow::before { content: ""; width: 25px; height: 2px; background: var(--lime); }
+    h1 { max-width: 590px; margin: 18px 0 20px; font-size: clamp(42px, 5vw, 68px); letter-spacing: -.065em; line-height: 1.02; }
+    .hero-copy { max-width: 470px; color: #a9bbce; font-size: 17px; line-height: 1.7; }
+    .hero-ctas { display: flex; gap: 12px; margin-top: 31px; }
+    .hero-note { display: flex; align-items: center; gap: 8px; margin-top: 18px; color: #8298ad; font-size: 11px; }
+    .check { color: var(--lime); font-weight: 900; }
 
-  /* Console mockup */
-  .console {
-    background: var(--ink); border-radius: var(--radius-lg); padding: 22px;
-    box-shadow: 0 30px 70px -20px rgba(10, 14, 23, 0.45);
-    border: 1px solid #1E2536;
-  }
-  .console-head { display: flex; align-items: center; justify-content: space-between; padding: 2px 4px 16px; border-bottom: 1px solid #1E2536; margin-bottom: 16px; }
-  .console-title { font-family: var(--font-mono); font-size: 11.5px; color: var(--on-ink-muted); letter-spacing: 0.03em; text-transform: uppercase; }
-  .console-live { display: flex; align-items: center; gap: 6px; font-family: var(--font-mono); font-size: 11px; color: var(--accent-bright); }
-  .live-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent-bright); animation: pulse 1.8s ease-in-out infinite; }
-  @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.35; } }
-  @media (prefers-reduced-motion: reduce) { .live-dot { animation: none; } }
+    .dashboard-wrap { position: relative; }
+    .dashboard {
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,.16);
+      border-radius: 18px;
+      background: #f8fbfd;
+      box-shadow: 0 32px 80px rgba(0, 0, 0, .3);
+      color: var(--ink);
+      transform: rotate(1.5deg);
+    }
+    .dash-top { display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #e4ebf2; padding: 13px 18px; background: white; }
+    .dash-top .mini-brand { display: flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 800; }
+    .mini-brand i { display: block; width: 17px; height: 17px; border-radius: 5px; background: var(--blue); }
+    .avatar { width: 25px; height: 25px; border-radius: 50%; background: #ffc97d; }
+    .dash-body { display: grid; grid-template-columns: 130px 1fr; min-height: 335px; }
+    .dash-side { padding: 20px 13px; background: #f1f6fa; }
+    .side-label { margin: 8px 10px 15px; color: #9aabba; font-size: 8px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; }
+    .side-item { display: flex; gap: 7px; align-items: center; border-radius: 6px; padding: 8px 9px; color: #75889b; font-size: 9px; }
+    .side-item.active { color: var(--blue); background: #e2edff; font-weight: 700; }
+    .side-icon { width: 10px; height: 10px; border: 1.5px solid currentColor; border-radius: 3px; }
+    .dash-main { padding: 25px; }
+    .dash-heading { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 17px; }
+    .dash-heading h3 { margin: 0 0 3px; font-size: 18px; letter-spacing: -.04em; }
+    .dash-heading p { margin: 0; color: #91a0af; font-size: 9px; }
+    .date-pill { border: 1px solid #dce5ed; border-radius: 6px; padding: 6px 8px; color: #75899b; background: white; font-size: 8px; }
+    .metric-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 9px; }
+    .metric { border: 1px solid #e7eef4; border-radius: 8px; padding: 12px; background: white; }
+    .metric span { color: #8b9cac; font-size: 8px; }
+    .metric strong { display: block; margin: 5px 0 2px; font-size: 19px; letter-spacing: -.05em; }
+    .up { color: #24aa74; font-size: 8px; }
+    .chart-card { display: grid; grid-template-columns: 1fr 125px; gap: 14px; margin-top: 13px; }
+    .chart, .activity { border: 1px solid #e7eef4; border-radius: 8px; padding: 13px; background: white; }
+    .chart-title { margin-bottom: 12px; font-size: 9px; font-weight: 700; }
+    .bars { display: flex; align-items: end; justify-content: space-around; height: 92px; border-bottom: 1px solid #e6eef4; background: repeating-linear-gradient(to bottom, transparent, transparent 29px, #f0f4f7 30px); }
+    .bar { width: 13px; border-radius: 4px 4px 0 0; background: #b6d4ff; }
+    .bar:nth-child(2), .bar:nth-child(5) { background: var(--blue); }
+    .bar:nth-child(3) { background: #6fafff; }
+    .bar:nth-child(1) { height: 33%; } .bar:nth-child(2) { height: 58%; } .bar:nth-child(3) { height: 78%; } .bar:nth-child(4) { height: 49%; } .bar:nth-child(5) { height: 88%; } .bar:nth-child(6) { height: 66%; } .bar:nth-child(7) { height: 96%; }
+    .activity-row { display: flex; gap: 7px; align-items: center; margin-top: 11px; font-size: 8px; }
+    .activity-row i { width: 18px; height: 18px; border-radius: 50%; background: #d9e9ff; }
+    .activity-row span { display: block; color: #8495a5; font-size: 7px; }
+    .float-card { position: absolute; right: -28px; bottom: -25px; display: flex; gap: 10px; align-items: center; border: 1px solid rgba(255,255,255,.25); border-radius: 12px; padding: 13px 16px; color: white; background: rgba(14, 38, 62, .92); box-shadow: 0 15px 35px rgba(0,0,0,.22); font-size: 10px; }
+    .float-card b { display: block; margin-top: 2px; font-size: 14px; }
+    .pulse { width: 29px; height: 29px; border-radius: 50%; background: var(--lime); box-shadow: 0 0 0 6px rgba(186,243,90,.15); }
 
-  .branch-row { display: grid; grid-template-columns: 1.4fr 0.8fr 0.9fr; align-items: center; padding: 12px 4px; border-bottom: 1px solid #171D2C; }
-  .branch-row:last-child { border-bottom: none; }
-  .branch-name { font-size: 13.5px; color: #F2F3F6; font-weight: 500; }
-  .branch-name span { display: block; font-family: var(--font-mono); font-size: 10.5px; color: var(--on-ink-muted); margin-top: 2px; font-weight: 400; }
-  .branch-status { display: flex; align-items: center; gap: 6px; font-family: var(--font-mono); font-size: 11px; }
-  .status-dot { width: 6px; height: 6px; border-radius: 50%; }
-  .status-dot.on { background: var(--accent-bright); }
-  .status-dot.low { background: #D9A441; }
-  .status-open { color: var(--accent-bright); }
-  .status-low { color: #D9A441; }
-  .branch-count { font-family: var(--font-mono); font-size: 13.5px; color: #F2F3F6; text-align: right; }
-  .branch-count span { display: block; font-size: 10px; color: var(--on-ink-muted); font-weight: 400; margin-top: 2px; }
-  .console-foot { display: flex; justify-content: space-between; padding-top: 14px; margin-top: 4px; border-top: 1px solid #1E2536; font-family: var(--font-mono); font-size: 11px; color: var(--on-ink-muted); }
-  .console-foot strong { color: #F2F3F6; font-weight: 500; }
+    .logos { padding: 32px 0; border-bottom: 1px solid var(--line); color: #98a8b7; text-align: center; }
+    .logos p { margin: 0 0 18px; font-size: 10px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
+    .logo-row { display: flex; justify-content: space-between; align-items: center; gap: 24px; color: #a5b3c0; font-size: 16px; font-weight: 800; }
+    .logo-row span:nth-child(2) { font-weight: 400; letter-spacing: .08em; }
+    .logo-row span:nth-child(3) { font-style: italic; }
+    .logo-row span:nth-child(4) { letter-spacing: .12em; }
 
-  /* ---------- Stat strip ---------- */
-  .stat-strip { border-bottom: 1px solid var(--border); background: var(--surface); }
-  .stat-grid { display: grid; grid-template-columns: repeat(4, 1fr); max-width: var(--max); margin: 0 auto; }
-  .stat-cell { padding: 28px 40px; border-left: 1px solid var(--border); }
-  .stat-cell:first-child { border-left: none; }
-  .stat-num { font-family: var(--font-mono); font-size: 24px; font-weight: 600; color: var(--text); }
-  .stat-label { font-size: 12.5px; color: var(--text-muted); margin-top: 4px; }
+    section { padding: 105px 0; }
+    .section-heading { max-width: 650px; margin: 0 auto 52px; text-align: center; }
+    .section-heading .eyebrow { justify-content: center; color: var(--blue); }
+    .section-heading .eyebrow::before { background: var(--blue); }
+    h2 { margin: 14px 0; color: var(--ink); font-size: clamp(30px, 4vw, 46px); letter-spacing: -.06em; line-height: 1.1; }
+    .section-heading p { margin: 0; color: var(--muted); font-size: 16px; }
+    .feature-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+    .feature-card { border: 1px solid var(--line); border-radius: var(--radius); padding: 28px; background: white; transition: .2s ease; }
+    .feature-card:hover { border-color: #bfd7f6; box-shadow: 0 12px 35px rgba(24,70,115,.08); transform: translateY(-4px); }
+    .feature-icon { display: grid; place-items: center; width: 45px; height: 45px; margin-bottom: 21px; border-radius: 13px; color: var(--blue); background: #eaf2ff; font-size: 20px; font-weight: 800; }
+    .feature-card:nth-child(2) .feature-icon { color: #0da4a7; background: #e4fbf9; }
+    .feature-card:nth-child(3) .feature-icon { color: #ba7b18; background: #fff5df; }
+    .feature-card h3 { margin: 0 0 9px; font-size: 18px; letter-spacing: -.03em; }
+    .feature-card p { margin: 0; color: var(--muted); font-size: 13px; line-height: 1.7; }
+    .feature-card small { display: inline-block; margin-top: 17px; color: #8091a3; font-size: 10px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; }
+    .app-section { overflow: hidden; color: white; background: var(--navy-2); }
+    .app-section .section-heading { max-width: 700px; }
+    .app-section h2 { color: white; }
+    .app-section .section-heading p { color: #9eb1c5; }
+    .app-section .eyebrow { color: var(--lime); }
+    .app-section .eyebrow::before { background: var(--lime); }
+    .app-grid { display: grid; grid-template-columns: .9fr 1.1fr; gap: 75px; align-items: center; }
+    .app-copy h3 { margin: 0 0 12px; font-size: 25px; letter-spacing: -.04em; }
+    .app-copy p { max-width: 480px; margin: 0; color: #9eb1c5; font-size: 14px; line-height: 1.75; }
+    .app-list { display: grid; gap: 14px; margin: 27px 0 0; padding: 0; list-style: none; color: #d3dfeb; font-size: 13px; }
+    .app-list li { display: flex; gap: 10px; align-items: center; }
+    .app-list li::before { content: "✓"; display: grid; place-items: center; width: 18px; height: 18px; border-radius: 50%; color: var(--navy); background: var(--lime); font-size: 10px; font-weight: 900; }
+    .app-preview { display: flex; align-items: end; justify-content: center; gap: 20px; min-height: 320px; }
+    .phone { width: 155px; border: 6px solid #203c58; border-radius: 26px; padding: 8px; background: #f6faff; box-shadow: 0 25px 55px rgba(0,0,0,.3); color: var(--ink); }
+    .phone.back { opacity: .72; transform: rotate(-9deg) translateY(15px) scale(.9); }
+    .phone.front { position: relative; z-index: 1; transform: rotate(5deg); }
+    .phone-notch { width: 42px; height: 6px; margin: -2px auto 12px; border-radius: 10px; background: #203c58; }
+    .phone-brand { display: flex; justify-content: space-between; align-items: center; margin: 8px 5px 15px; font-size: 10px; font-weight: 800; }
+    .phone-avatar { width: 17px; height: 17px; border-radius: 50%; background: #ffc779; }
+    .phone-welcome { margin: 0 6px 12px; font-size: 12px; font-weight: 800; }
+    .phone-card { border-radius: 9px; padding: 12px 10px; color: white; background: linear-gradient(135deg, #347cf5, #244bc4); }
+    .phone-card small { display: block; opacity: .75; font-size: 7px; }
+    .phone-card strong { display: block; margin: 5px 0 10px; font-size: 20px; }
+    .phone-card span { font-size: 7px; }
+    .phone-title { margin: 15px 5px 8px; font-size: 9px; font-weight: 800; }
+    .phone-class { display: flex; gap: 7px; align-items: center; margin: 6px 5px; border-radius: 7px; padding: 7px; background: #e9f0f8; font-size: 7px; }
+    .phone-class i { width: 22px; height: 22px; border-radius: 6px; background: #c9dcff; }
+    .coming-tag { display: inline-block; margin-bottom: 17px; border: 1px solid rgba(186,243,90,.4); border-radius: 30px; padding: 6px 11px; color: var(--lime); font-size: 9px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
 
-  /* ---------- Sections ---------- */
-  section.section { max-width: var(--max); margin: 0 auto; padding: 88px 40px; }
-  .section-eyebrow { font-family: var(--font-mono); font-size: 11.5px; font-weight: 500; letter-spacing: 0.06em; color: var(--accent); text-transform: uppercase; margin-bottom: 12px; }
-  .section-title { font-size: 30px; max-width: 560px; margin-bottom: 12px; }
-  .section-sub { font-size: 15px; color: var(--text-muted); max-width: 520px; margin-bottom: 48px; }
-  .section-head-row { display: flex; justify-content: space-between; align-items: flex-end; gap: 40px; margin-bottom: 48px; flex-wrap: wrap; }
-  .section-head-row .section-sub { margin-bottom: 0; }
+    .split { background: var(--surface); }
+    .split-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 90px; align-items: center; }
+    .split .section-heading { margin: 0; text-align: left; }
+    .split .section-heading .eyebrow { justify-content: flex-start; }
+    .benefits { display: grid; gap: 14px; margin-top: 28px; }
+    .benefit { display: flex; gap: 12px; align-items: flex-start; color: #526477; font-size: 13px; }
+    .benefit .check { display: grid; place-items: center; flex: 0 0 19px; height: 19px; border-radius: 50%; color: #16331d; background: var(--lime); font-size: 11px; }
+    .ops-card { border: 1px solid #deebf5; border-radius: 20px; padding: 25px; background: white; box-shadow: var(--shadow); }
+    .ops-card-head { display: flex; justify-content: space-between; margin-bottom: 23px; }
+    .ops-card-head strong { font-size: 15px; }
+    .live { color: #17a36e; font-size: 10px; font-weight: 700; }
+    .live::before { content: ""; display: inline-block; width: 6px; height: 6px; margin-right: 4px; border-radius: 50%; background: #26c281; }
+    .member-row { display: flex; align-items: center; gap: 10px; padding: 13px 0; border-top: 1px solid #eef2f6; font-size: 11px; }
+    .member-avatar { width: 30px; height: 30px; border-radius: 10px; background: #dbe9ff; }
+    .member-row:nth-child(3) .member-avatar { background: #ffe0be; }
+    .member-row:nth-child(4) .member-avatar { background: #d7f2e7; }
+    .member-info { flex: 1; }
+    .member-info b { display: block; font-size: 11px; }
+    .member-info span { color: #97a6b3; font-size: 9px; }
+    .status { border-radius: 20px; padding: 4px 8px; color: #17966b; background: #e6f8ef; font-size: 8px; font-weight: 700; }
+    .status.orange { color: #bf7d13; background: #fff3dc; }
 
-  /* Problem cards */
-  .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
-  .card { background: var(--surface); padding: 28px; }
-  .card .card-icon { width: 34px; height: 34px; border-radius: 8px; background: var(--bg-alt); display: flex; align-items: center; justify-content: center; margin-bottom: 18px; }
-  .card h3 { font-size: 15.5px; margin-bottom: 8px; font-weight: 600; }
-  .card p { font-size: 13.5px; color: var(--text-muted); }
+    .pricing-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 13px; }
+    .price-card { position: relative; border: 1px solid var(--line); border-radius: 16px; padding: 25px 21px; }
+    .price-card.featured { border: 2px solid var(--blue); padding: 24px 20px; box-shadow: 0 14px 38px rgba(55,125,255,.13); }
+    .popular { position: absolute; top: -12px; right: 16px; border-radius: 30px; padding: 5px 10px; color: white; background: var(--blue); font-size: 8px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
+    .price-card h3 { margin: 0 0 4px; font-size: 17px; }
+    .price-card p { min-height: 42px; margin: 0 0 17px; color: var(--muted); font-size: 11px; }
+    .price { margin-bottom: 18px; font-size: 30px; font-weight: 800; letter-spacing: -.06em; }
+    .price small { color: var(--muted); font-size: 10px; font-weight: 500; letter-spacing: 0; }
+    .price-card .btn { width: 100%; padding: 10px; font-size: 11px; }
+    .price-card ul { display: grid; gap: 9px; margin: 20px 0 0; padding: 17px 0 0; border-top: 1px solid var(--line); list-style: none; color: #65768a; font-size: 11px; }
+    .price-card li::before { content: "✓"; margin-right: 7px; color: #21a873; font-weight: 800; }
 
-  /* Module grid */
-  .module-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
-  .module { background: var(--surface); padding: 28px; }
-  .module-tag { display: inline-block; font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.05em; color: var(--accent); background: var(--accent-soft); border: 1px solid var(--accent-line); padding: 3px 8px; border-radius: 5px; margin-bottom: 16px; text-transform: uppercase; }
-  .module h3 { font-size: 15.5px; margin-bottom: 8px; }
-  .module p { font-size: 13.5px; color: var(--text-muted); }
+    .cta { padding: 72px 0; background: var(--navy); }
+    .cta-box { display: flex; align-items: center; justify-content: space-between; gap: 30px; }
+    .cta h2 { max-width: 600px; margin: 0; color: white; font-size: 39px; }
+    .cta p { margin: 11px 0 0; color: #9bb0c4; font-size: 14px; }
+    footer { padding: 28px 0; color: #8699ac; background: #050d17; font-size: 11px; }
+    .footer-inner { display: flex; justify-content: space-between; align-items: center; }
+    .footer-inner .logo { color: white; font-size: 16px; }
+    .footer-links { display: flex; gap: 22px; }
+    .footer-links a:hover { color: white; }
 
-  /* Steps */
-  .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; position: relative; }
-  .steps::before { content: ""; position: absolute; top: 13px; left: 8%; right: 8%; height: 1px; background: var(--border-strong); z-index: 0; }
-  .step { position: relative; z-index: 1; }
-  .step-num { width: 26px; height: 26px; border-radius: 50%; background: var(--ink); color: #fff; font-family: var(--font-mono); font-size: 11.5px; display: flex; align-items: center; justify-content: center; margin-bottom: 18px; }
-  .step h3 { font-size: 16.5px; margin-bottom: 8px; }
-  .step p { font-size: 13.5px; color: var(--text-muted); max-width: 280px; }
-
-  /* Security */
-  .security-section { background: var(--ink); border-top: 1px solid var(--border); }
-  .security-section .section-eyebrow { color: var(--accent-bright); }
-  .security-section .section-title, .security-section h3 { color: #fff; }
-  .security-section .section-sub { color: var(--on-ink-muted); }
-  .security-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 32px; }
-  .security-item { padding-top: 18px; border-top: 1px solid #232B3E; }
-  .security-item h3 { font-size: 14.5px; margin-bottom: 8px; font-weight: 600; }
-  .security-item p { font-size: 13px; color: var(--on-ink-muted); }
-
-  /* Pilot banner */
-  .beta-banner {
-    max-width: var(--max); margin: 0 auto 0; padding: 36px 40px; border-radius: var(--radius-lg);
-    background: var(--surface); border: 1px solid var(--border);
-    display: flex; align-items: center; gap: 28px; flex-wrap: wrap;
-  }
-  .beta-banner .badge { font-family: var(--font-mono); font-size: 11px; font-weight: 600; letter-spacing: 0.04em; color: var(--accent); background: var(--accent-soft); border: 1px solid var(--accent-line); padding: 5px 10px; border-radius: 999px; text-transform: uppercase; white-space: nowrap; }
-  .beta-banner .beta-copy { flex: 1; min-width: 260px; }
-  .beta-banner .beta-copy h3 { font-size: 16px; margin-bottom: 4px; }
-  .beta-banner .beta-copy p { font-size: 13.5px; color: var(--text-muted); }
-
-  /* Final CTA */
-  .final-cta { text-align: center; padding: 96px 24px 100px; }
-  .final-cta .section-eyebrow { justify-content: center; display: flex; }
-  .final-cta h2 { font-size: 34px; max-width: 560px; margin: 0 auto 14px; }
-  .final-cta p { font-size: 15px; color: var(--text-muted); max-width: 440px; margin: 0 auto 32px; }
-  .final-actions { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; }
-
-  /* Footer */
-  footer { border-top: 1px solid var(--border); background: var(--surface); }
-  .footer-inner { max-width: var(--max); margin: 0 auto; padding: 56px 40px 32px; display: grid; grid-template-columns: 1.4fr repeat(3, 1fr); gap: 40px; }
-  .footer-brand .nav-brand { margin-bottom: 12px; }
-  .footer-brand p { font-size: 13px; color: var(--text-muted); max-width: 240px; }
-  .footer-col h4 { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.05em; text-transform: uppercase; color: var(--text-faint); margin-bottom: 14px; }
-  .footer-col a { display: block; font-size: 13.5px; color: var(--text-muted); margin-bottom: 10px; }
-  .footer-col a:hover { color: var(--text); }
-  .footer-bottom { max-width: var(--max); margin: 0 auto; padding: 20px 40px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; font-size: 12px; color: var(--text-faint); flex-wrap: wrap; gap: 8px; }
-
-  @media (max-width: 980px) {
-    .hero { grid-template-columns: 1fr; padding: 56px 24px; gap: 40px; }
-    .hero-visual { order: -1; }
-    .stat-grid { grid-template-columns: repeat(2, 1fr); }
-    .stat-cell:nth-child(3) { border-left: none; }
-    .grid-3, .module-grid { grid-template-columns: 1fr; }
-    .steps { grid-template-columns: 1fr; gap: 28px; }
-    .steps::before { display: none; }
-    .security-grid { grid-template-columns: repeat(2, 1fr); }
-    section.section { padding: 64px 24px; }
-    .footer-inner { grid-template-columns: 1fr 1fr; }
-    .nav-links .nav-link { display: none; }
-  }
-  @media (max-width: 600px) {
-    .hero h1 { font-size: 32px; }
-    .nav-inner { padding: 14px 20px; }
-    .footer-inner { grid-template-columns: 1fr; padding: 48px 20px 24px; }
-    .beta-banner { padding: 28px 24px; }
-  }
-</style>
+    @media (max-width: 900px) {
+      .hero-grid, .split-grid { grid-template-columns: 1fr; gap: 50px; }
+      .hero { padding-bottom: 100px; }
+      .hero-copy { max-width: 580px; }
+      .dashboard { max-width: 650px; margin: 0 auto; }
+      .float-card { right: 0; }
+      .feature-grid { grid-template-columns: repeat(2, 1fr); }
+      .pricing-grid { grid-template-columns: repeat(2, 1fr); }
+      .app-grid { grid-template-columns: 1fr; gap: 35px; }
+      .split .section-heading { max-width: 600px; }
+    }
+    @media (max-width: 680px) {
+      .container { width: min(100% - 32px, 1160px); }
+      header { top: 31px; }
+      .nav-links, .nav-actions .login { display: none; }
+      .nav-toggle { display: block; }
+      .nav-actions .btn { display: none; }
+      .nav.open .nav-links { position: absolute; top: 57px; left: 16px; right: 16px; display: grid; gap: 0; margin: 0; border: 1px solid rgba(255,255,255,.15); border-radius: 12px; padding: 8px; background: #10263c; }
+      .nav.open .nav-links a { padding: 11px 12px; }
+      h1 { font-size: 46px; }
+      .hero { padding-top: 135px; }
+      .hero-ctas { flex-direction: column; align-items: stretch; max-width: 300px; }
+      .dashboard { transform: none; }
+      .dash-body { grid-template-columns: 1fr; }
+      .dash-side { display: none; }
+      .dash-main { padding: 16px; }
+      .chart-card { grid-template-columns: 1fr; }
+      .activity { display: none; }
+      .float-card { bottom: -22px; }
+      .logo-row { flex-wrap: wrap; justify-content: center; font-size: 13px; }
+      section { padding: 78px 0; }
+      .feature-grid, .pricing-grid { grid-template-columns: 1fr; }
+      .app-preview { min-height: 280px; }
+      .cta-box, .footer-inner { align-items: flex-start; flex-direction: column; }
+      .cta h2 { font-size: 32px; }
+    }
+  </style>
 </head>
 <body>
+  <div class="announcement"><strong>New:</strong> Give your gym a smarter operating system. Start your 14-day free trial today →</div>
 
-<nav>
-  <div class="nav-inner">
-    <a href="#" class="nav-brand">
-      <div class="nav-mark">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M6.5 6.5h11"/><path d="M6.5 17.5h11"/><path d="M3 6.5v11"/><path d="M21 6.5v11"/><path d="M6.5 12h11"/>
-        </svg>
-      </div>
-      GTAP
-    </a>
-    <div class="nav-links">
-      <a href="#features" class="nav-link">Platform</a>
-      <a href="#how-it-works" class="nav-link">How it works</a>
-      <a href="#security" class="nav-link">Security</a>
-      <span class="nav-divider"></span>
-      <a href="https://app.yourdomain.com" class="nav-login">Log in</a>
-      <a href="https://app.yourdomain.com/signup" class="nav-cta">Request access</a>
-    </div>
-  </div>
-</nav>
-
-<section class="hero-section">
-  <div class="hero">
-    <div>
-      <span class="eyebrow"><span class="dot"></span>Operations platform · Early access</span>
-      <h1>The system of record for how your gym actually runs</h1>
-      <p class="lead">One console for check-ins, billing, classes, and every branch you operate — replacing the spreadsheet that breaks and the sign-in sheet no one can find.</p>
-      <div class="hero-actions">
-        <a href="https://app.yourdomain.com/signup" class="btn-primary">Request access</a>
-        <a href="#features" class="btn-secondary">See the platform</a>
-      </div>
-      <p class="hero-note">Free during the pilot program · Live in under 5 minutes · No IT team required</p>
-    </div>
-    <div class="hero-visual">
-      <div class="console">
-        <div class="console-head">
-          <span class="console-title">Facility console</span>
-          <span class="console-live"><span class="live-dot"></span>Live</span>
+  <header>
+    <div class="container">
+      <nav class="nav" id="nav">
+        <a class="logo" href="#"><span class="logo-mark">G</span> GTap</a>
+        <div class="nav-links">
+          <a href="#features">Features</a>
+          <a href="#how-it-works">How it works</a>
+          <a href="#pricing">Pricing</a>
+          <a href="#contact">Contact</a>
         </div>
-        <div class="branch-row">
-          <div class="branch-name">Makati — Main<span>Front desk</span></div>
-          <div class="branch-status"><span class="status-dot on"></span><span class="status-open">Open</span></div>
-          <div class="branch-count">42<span>checked in</span></div>
+        <div class="nav-actions">
+          <a class="login" href="#">Log in</a>
+          <a class="btn btn-light" href="#contact">Get started <span>↗</span></a>
+          <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">☰</button>
         </div>
-        <div class="branch-row">
-          <div class="branch-name">Quezon City<span>Front desk</span></div>
-          <div class="branch-status"><span class="status-dot on"></span><span class="status-open">Open</span></div>
-          <div class="branch-count">31<span>checked in</span></div>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="container hero-grid">
+        <div>
+          <div class="eyebrow">The gym operating system</div>
+          <h1>More time building your gym. Less time managing it.</h1>
+          <p class="hero-copy">GTap brings members, check-ins, payments, classes and every branch into one calm, connected workspace.</p>
+          <div class="hero-ctas">
+            <a class="btn" href="#contact">Start your free trial <span>→</span></a>
+            <a class="btn btn-outline" href="#features">Explore GTap</a>
+          </div>
+          <div class="hero-note"><span class="check">✓</span> No credit card required <span class="check">✓</span> Set up in minutes</div>
         </div>
-        <div class="branch-row">
-          <div class="branch-name">Cebu — IT Park<span>Front desk</span></div>
-          <div class="branch-status"><span class="status-dot low"></span><span class="status-low">3 expiring</span></div>
-          <div class="branch-count">18<span>checked in</span></div>
-        </div>
-        <div class="console-foot">
-          <span>Synced <strong>2s ago</strong></span>
-          <span><strong>91</strong> active across 3 branches</span>
+        <div class="dashboard-wrap">
+          <div class="dashboard">
+            <div class="dash-top"><div class="mini-brand"><i></i> GTap / Overview</div><div class="avatar"></div></div>
+            <div class="dash-body">
+              <aside class="dash-side">
+                <div class="side-label">Workspace</div>
+                <div class="side-item active"><i class="side-icon"></i> Overview</div>
+                <div class="side-item"><i class="side-icon"></i> Members</div>
+                <div class="side-item"><i class="side-icon"></i> Attendance</div>
+                <div class="side-item"><i class="side-icon"></i> Classes</div>
+                <div class="side-item"><i class="side-icon"></i> Payments</div>
+                <div class="side-label">Manage</div>
+                <div class="side-item"><i class="side-icon"></i> Reports</div>
+              </aside>
+              <div class="dash-main">
+                <div class="dash-heading"><div><h3>Good morning, Alex</h3><p>Here is what is happening at your gym today.</p></div><div class="date-pill">Today ▾</div></div>
+                <div class="metric-grid">
+                  <div class="metric"><span>Total members</span><strong>1,248</strong><small class="up">↗ 12.4%</small></div>
+                  <div class="metric"><span>Today's check-ins</span><strong>186</strong><small class="up">↗ 8.2%</small></div>
+                  <div class="metric"><span>Monthly revenue</span><strong>₱48.6k</strong><small class="up">↗ 14.8%</small></div>
+                </div>
+                <div class="chart-card">
+                  <div class="chart"><div class="chart-title">Attendance activity</div><div class="bars"><i class="bar"></i><i class="bar"></i><i class="bar"></i><i class="bar"></i><i class="bar"></i><i class="bar"></i><i class="bar"></i></div></div>
+                  <div class="activity"><div class="chart-title">Recent activity</div><div class="activity-row"><i></i><div>New member<span>Just now</span></div></div><div class="activity-row"><i></i><div>Payment received<span>8 min ago</span></div></div><div class="activity-row"><i></i><div>Class booked<span>14 min ago</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="float-card"><i class="pulse"></i><div>Live check-ins <b>+24 today</b></div></div>
         </div>
       </div>
-    </div>
-  </div>
-</section>
+    </section>
 
-<section class="stat-strip">
-  <div class="stat-grid">
-    <div class="stat-cell">
-      <div class="stat-num">&lt; 5 min</div>
-      <div class="stat-label">To set up a branch and start checking members in</div>
+    <div class="logos">
+      <div class="container"><p>Built for ambitious gyms and growing fitness brands</p><div class="logo-row"><span>IRONWORKS</span><span>move/ment</span><span>THE DAILY GRIND</span><span>FITLAB</span><span>▲ NORTH</span></div></div>
     </div>
-    <div class="stat-cell">
-      <div class="stat-num">Unlimited</div>
-      <div class="stat-label">Branches per account, one login for owners</div>
-    </div>
-    <div class="stat-cell">
-      <div class="stat-num">100%</div>
-      <div class="stat-label">Check-ins captured offline, synced when back online</div>
-    </div>
-    <div class="stat-cell">
-      <div class="stat-num">PCI-DSS</div>
-      <div class="stat-label">Compliant billing through PayMongo</div>
-    </div>
-  </div>
-</section>
 
-<section class="section">
-  <div class="section-eyebrow">The problem</div>
-  <h2 class="section-title">What replacing a spreadsheet actually fixes</h2>
-  <p class="section-sub">Manual tools don't fail loudly. They fail quietly, one broken formula or missing entry at a time — until the data you need isn't there.</p>
-  <div class="grid-3">
-    <div class="card">
-      <div class="card-icon">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#146356" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 2v6l-6 12a2 2 0 0 0 2 3h14a2 2 0 0 0 2-3L15 8V2"/><path d="M9 2h6"/></svg>
-      </div>
-      <h3>The spreadsheet breaks</h3>
-      <p>One wrong formula and last week's attendance is gone. No one can say which copy is current, or who last edited it.</p>
-    </div>
-    <div class="card">
-      <div class="card-icon">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#146356" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 7h8M8 11h8M8 15h4"/></svg>
-      </div>
-      <h3>Paper sign-in sheets vanish</h3>
-      <p>A logbook at the front desk doesn't hold up when you need to know who actually renewed, or prove it later.</p>
-    </div>
-    <div class="card">
-      <div class="card-icon">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#146356" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v6l4 2"/></svg>
-      </div>
-      <h3>No real-time visibility</h3>
-      <p>You find out a membership expired when the member is already at the desk — not before, when you could act on it.</p>
-    </div>
-  </div>
-</section>
-
-<section class="section" id="features">
-  <div class="section-head-row">
-    <div>
-      <div class="section-eyebrow">Platform</div>
-      <h2 class="section-title">Every module a growing gym needs</h2>
-    </div>
-    <p class="section-sub">Built for owners and multi-branch operators — one console, without the enterprise bloat you'd get elsewhere.</p>
-  </div>
-  <div class="module-grid">
-    <div class="module">
-      <span class="module-tag">Check-in</span>
-      <h3>NFC / RFID tap check-in</h3>
-      <p>Members tap a card or phone at the desk. Status, timestamp, and visit history are logged automatically — no manual entry.</p>
-    </div>
-    <div class="module">
-      <span class="module-tag">Billing</span>
-      <h3>Automated membership billing</h3>
-      <p>Charge members through PayMongo. Memberships extend the moment payment clears, with no follow-up needed from staff.</p>
-    </div>
-    <div class="module">
-      <span class="module-tag">Multi-branch</span>
-      <h3>Run every location from one account</h3>
-      <p>Owners see all branches from a single login, with reporting that breaks down cleanly by location.</p>
-    </div>
-    <div class="module">
-      <span class="module-tag">Scheduling</span>
-      <h3>Classes and locker management</h3>
-      <p>Schedule classes, track bookings, and assign lockers without a second spreadsheet running alongside the first.</p>
-    </div>
-    <div class="module">
-      <span class="module-tag">Analytics</span>
-      <h3>Attendance and retention data</h3>
-      <p>See peak hours, retention rate, and daily traffic across every branch, updated as check-ins happen.</p>
-    </div>
-    <div class="module">
-      <span class="module-tag">Reliability</span>
-      <h3>Works when the internet doesn't</h3>
-      <p>Front desk keeps checking members in if the connection drops. Everything syncs automatically once it's back.</p>
-    </div>
-  </div>
-</section>
-
-<section class="section" id="how-it-works">
-  <div class="section-eyebrow">Rollout</div>
-  <h2 class="section-title">Live in one afternoon</h2>
-  <p class="section-sub">No procurement process, no setup calls, no IT ticket.</p>
-  <div class="steps">
-    <div class="step">
-      <div class="step-num">01</div>
-      <h3>Create your gym</h3>
-      <p>Sign up with your gym name and you're the owner — set up starts immediately, with no one to wait on.</p>
-    </div>
-    <div class="step">
-      <div class="step-num">02</div>
-      <h3>Register your members</h3>
-      <p>Add members and assign each one an NFC or RFID card in seconds, one at a time or in bulk.</p>
-    </div>
-    <div class="step">
-      <div class="step-num">03</div>
-      <h3>Everyone taps in</h3>
-      <p>Your front desk starts logging check-ins immediately, and you watch attendance update in real time.</p>
-    </div>
-  </div>
-</section>
-
-<section class="section security-section" id="security">
-  <div class="section-eyebrow">Trust &amp; reliability</div>
-  <h2 class="section-title">Built to standards a gym owner can rely on</h2>
-  <p class="section-sub">The parts you don't see are held to the same bar as the parts you do.</p>
-  <div class="security-grid">
-    <div class="security-item">
-      <h3>Encrypted in transit and at rest</h3>
-      <p>Member and payment data is encrypted end to end, on every device and every branch.</p>
-    </div>
-    <div class="security-item">
-      <h3>Role-based staff access</h3>
-      <p>Owners control exactly what front-desk staff can see and do — no shared logins required.</p>
-    </div>
-    <div class="security-item">
-      <h3>PCI-DSS compliant billing</h3>
-      <p>Payments run through PayMongo. Card data never touches GTAP servers directly.</p>
-    </div>
-    <div class="security-item">
-      <h3>Offline-first architecture</h3>
-      <p>Check-ins are never lost to a dropped connection — data queues locally and syncs on reconnect.</p>
-    </div>
-  </div>
-</section>
-
-<section class="section" style="padding-top:0;">
-  <div class="beta-banner">
-    <span class="badge">Pilot program</span>
-    <div class="beta-copy">
-      <h3>We're piloting GTAP with a small number of gyms</h3>
-      <p>Early access is free for pilot partners, and your feedback directly shapes what we build next.</p>
-    </div>
-    <a href="https://app.yourdomain.com/signup" class="btn-primary">Join the pilot</a>
-  </div>
-</section>
-
-<section class="final-cta">
-  <div class="section-eyebrow">Get started</div>
-  <h2>Ready to see it running your gym?</h2>
-  <p>Set up your first branch today — it's free while we're in pilot, and you'll be checking members in within the hour.</p>
-  <div class="final-actions">
-    <a href="https://app.yourdomain.com/signup" class="btn-primary">Request access</a>
-    <a href="mailto:you@yourdomain.com" class="btn-secondary">Talk to us first</a>
-  </div>
-</section>
-
-<footer>
-  <div class="footer-inner">
-    <div class="footer-brand">
-      <a href="#" class="nav-brand">
-        <div class="nav-mark">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M6.5 6.5h11"/><path d="M6.5 17.5h11"/><path d="M3 6.5v11"/><path d="M21 6.5v11"/><path d="M6.5 12h11"/>
-          </svg>
+    <section id="features">
+      <div class="container">
+        <div class="section-heading"><div class="eyebrow">Everything in one place</div><h2>Run the whole gym from a single screen.</h2><p>Stop stitching together spreadsheets and disconnected tools. GTap keeps your team and your business moving in sync.</p></div>
+        <div class="feature-grid">
+          <article class="feature-card"><div class="feature-icon">◎</div><h3>Member management</h3><p>Profiles, membership plans, status, expiration dates, branch assignments and digital waivers in one place.</p><small>Member records</small></article>
+          <article class="feature-card"><div class="feature-icon">⌁</div><h3>NFC & RFID check-ins</h3><p>Let members tap in with phones, cards, USB readers or a kiosk. Offline taps sync when your connection returns.</p><small>Attendance</small></article>
+          <article class="feature-card"><div class="feature-icon">▣</div><h3>Membership plans</h3><p>Create monthly, quarterly or annual plans with prices, billing cycles and member limits that are enforced automatically.</p><small>Plans & access</small></article>
+          <article class="feature-card"><div class="feature-icon">₱</div><h3>Payments & billing</h3><p>Collect member payments through PayMongo, QRPh or cards, with payment history and membership updates in sync.</p><small>Revenue</small></article>
+          <article class="feature-card"><div class="feature-icon">⌂</div><h3>Multi-branch control</h3><p>Run multiple locations under one gym account with branch-specific members, staff, classes, lockers and reports.</p><small>Scale confidently</small></article>
+          <article class="feature-card"><div class="feature-icon">♙</div><h3>Staff permissions</h3><p>Give owners, front-desk staff and trainers focused access based on their role and assigned branch.</p><small>Team workflows</small></article>
+          <article class="feature-card"><div class="feature-icon">✦</div><h3>Classes & bookings</h3><p>Schedule classes, assign trainers, set capacity, manage bookings and prevent duplicate reservations.</p><small>Programming</small></article>
+          <article class="feature-card"><div class="feature-icon">◷</div><h3>Trainer sessions</h3><p>Manage trainer availability, one-on-one bookings, session duration, cancellations and upcoming schedules.</p><small>Personal training</small></article>
+          <article class="feature-card"><div class="feature-icon">▤</div><h3>Locker management</h3><p>Create, assign and release branch-based lockers while keeping availability and member access clear.</p><small>Front desk</small></article>
+          <article class="feature-card"><div class="feature-icon">↗</div><h3>Dashboard analytics</h3><p>See active, expired and frozen members, daily attendance, activity by hour and branch performance at a glance.</p><small>Live insights</small></article>
+          <article class="feature-card"><div class="feature-icon">⇩</div><h3>Reports & CSV exports</h3><p>Download attendance, revenue, growth, churn, sessions, classes and payment reports for Excel or Sheets.</p><small>Business reporting</small></article>
+          <article class="feature-card"><div class="feature-icon">↻</div><h3>Member continuity</h3><p>Replace lost cards without losing account history, and support password recovery with secure link validation.</p><small>Reliable access</small></article>
         </div>
-        GTAP
-      </a>
-      <p>The operations console for multi-branch gyms — check-ins, billing, and reporting in one place.</p>
-    </div>
-    <div class="footer-col">
-      <h4>Platform</h4>
-      <a href="#features">Modules</a>
-      <a href="#how-it-works">How it works</a>
-      <a href="#security">Security</a>
-    </div>
-    <div class="footer-col">
-      <h4>Company</h4>
-      <a href="mailto:you@yourdomain.com">Contact</a>
-      <a href="https://app.yourdomain.com/signup">Pilot program</a>
-    </div>
-    <div class="footer-col">
-      <h4>Account</h4>
-      <a href="https://app.yourdomain.com">Log in</a>
-      <a href="https://app.yourdomain.com/signup">Request access</a>
-    </div>
-  </div>
-  <div class="footer-bottom">
-    <span>© 2026 GTAP. Multi-tenant gym management platform.</span>
-    <span>Questions? <a href="mailto:you@yourdomain.com" style="text-decoration:underline;">you@yourdomain.com</a></span>
-  </div>
-</footer>
+      </div>
+    </section>
 
+    <section class="app-section">
+      <div class="container">
+        <div class="section-heading"><div class="eyebrow">On the roadmap</div><h2>A branded member app, made for your gym.</h2><p>Give your members a mobile-first way to stay connected with your gym between visits.</p></div>
+        <div class="app-grid">
+          <div class="app-copy">
+            <span class="coming-tag">Future feature · Member app</span>
+            <h3>Your gym in their pocket.</h3>
+            <p>GTap can evolve beyond the staff dashboard into a dedicated member experience—your brand, your colors and your community in one app.</p>
+            <ul class="app-list">
+              <li>View membership status and renewal dates</li>
+              <li>Browse classes and book a spot</li>
+              <li>Book one-on-one trainer sessions</li>
+              <li>Receive announcements and gym updates</li>
+              <li>View attendance and payment history</li>
+            </ul>
+          </div>
+          <div class="app-preview" aria-label="Preview of the future GTap member app">
+            <div class="phone back"><div class="phone-notch"></div><div class="phone-brand">GTap <i class="phone-avatar"></i></div><div class="phone-welcome">Your schedule</div><div class="phone-class"><i></i> Yoga Flow</div><div class="phone-class"><i></i> Strength Lab</div><div class="phone-class"><i></i> Boxing Basics</div></div>
+            <div class="phone front"><div class="phone-notch"></div><div class="phone-brand">GTap <i class="phone-avatar"></i></div><div class="phone-welcome">Hey, Sofia 👋</div><div class="phone-card"><small>MEMBERSHIP</small><strong>Active</strong><span>Renews on 12 Oct 2025</span></div><div class="phone-title">Upcoming class</div><div class="phone-class"><i></i><b>Strength & conditioning<br><small>Today · 6:30 PM</small></b></div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="split" id="how-it-works">
+      <div class="container split-grid">
+        <div>
+          <div class="section-heading"><div class="eyebrow">Made for real gym teams</div><h2>Less admin. More momentum.</h2><p>Whether you run one neighborhood gym or a growing chain, GTap gives everyone the right view and the right tools.</p></div>
+          <div class="benefits">
+            <div class="benefit"><span class="check">✓</span><span><strong>One connected workspace</strong><br>Members, payments, classes, lockers and staff in one simple system.</span></div>
+            <div class="benefit"><span class="check">✓</span><span><strong>Access that makes sense</strong><br>Give owners, front desk teams and trainers the permissions they need.</span></div>
+            <div class="benefit"><span class="check">✓</span><span><strong>Built to scale with you</strong><br>Add branches and members without adding more operational complexity.</span></div>
+          </div>
+        </div>
+        <div class="ops-card"><div class="ops-card-head"><strong>Live member activity</strong><span class="live">Live now</span></div><div class="member-row"><i class="member-avatar"></i><div class="member-info"><b>Sofia Reyes</b><span>Checked in · Main branch</span></div><span class="status">Active</span></div><div class="member-row"><i class="member-avatar"></i><div class="member-info"><b>Marco Santos</b><span>Payment received · Monthly</span></div><span class="status">Paid</span></div><div class="member-row"><i class="member-avatar"></i><div class="member-info"><b>Jamie Tan</b><span>Membership ends in 3 days</span></div><span class="status orange">Renew soon</span></div><div class="member-row"><i class="member-avatar"></i><div class="member-info"><b>Elena Cruz</b><span>Booked · Strength & conditioning</span></div><span class="status">Booked</span></div></div>
+      </div>
+    </section>
+
+    <section id="pricing">
+      <div class="container">
+        <div class="section-heading"><div class="eyebrow">Simple, transparent pricing</div><h2>Pick the plan that fits your next chapter.</h2><p>Start small, upgrade when you're ready. Every plan gives you the tools to run a better gym.</p></div>
+        <div class="pricing-grid">
+          <article class="price-card"><h3>Mini</h3><p>For new and independent gyms.</p><div class="price">₱99 <small>/mo</small></div><a class="btn btn-outline" href="#contact">Get started</a><ul><li>Member management</li><li>Attendance tracking</li><li>Basic reports</li></ul></article>
+          <article class="price-card"><h3>Standard</h3><p>For busy single-location gyms.</p><div class="price">₱599 <small>/mo</small></div><a class="btn btn-outline" href="#contact">Get started</a><ul><li>Everything in Mini</li><li>Payments & classes</li><li>Digital waivers</li></ul></article>
+          <article class="price-card featured"><span class="popular">Most popular</span><h3>Member+</h3><p>For gyms ready to grow.</p><div class="price">₱899 <small>/mo</small></div><a class="btn" href="#contact">Start free trial</a><ul><li>Everything in Standard</li><li>Advanced analytics</li><li>Trainer sessions</li></ul></article>
+          <article class="price-card"><h3>Access</h3><p>For multi-branch operators.</p><div class="price">₱1,299 <small>/mo</small></div><a class="btn btn-outline" href="#contact">Get started</a><ul><li>Everything in Member+</li><li>Multiple branches</li><li>Branch reporting</li></ul></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="cta" id="contact"><div class="container cta-box"><div><h2>Your best-run gym starts here.</h2><p>Bring your gym operations into focus with GTap.</p></div><a class="btn btn-light" href="mailto:hello@gtap.app">Talk to our team <span>↗</span></a></div></section>
+  </main>
+
+  <footer><div class="container footer-inner"><a class="logo" href="#"><span class="logo-mark">G</span> GTap</a><div class="footer-links"><a href="#features">Features</a><a href="#pricing">Pricing</a><a href="mailto:hello@gtap.app">Contact</a></div><span>© 2025 GTap. Built for better gyms.</span></div></footer>
+  <script>
+    const nav = document.getElementById("nav");
+    const toggle = document.querySelector(".nav-toggle");
+    toggle.addEventListener("click", () => {
+      const open = nav.classList.toggle("open");
+      toggle.setAttribute("aria-expanded", open);
+      toggle.textContent = open ? "×" : "☰";
+    });
+    document.querySelectorAll(".nav-links a").forEach(link => link.addEventListener("click", () => {
+      nav.classList.remove("open");
+      toggle.setAttribute("aria-expanded", "false");
+      toggle.textContent = "☰";
+    }));
+  </script>
 </body>
 </html>
